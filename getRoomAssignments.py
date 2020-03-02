@@ -40,10 +40,9 @@ def getClassName():
     data = json.loads(response.read()).get("assignments")
 
     for i in data:
-        print
         if str(i.get("lamp_serial"))==lampSerialNumber and isTimeIncluded(i.get("time")) and str(i.get("semester"))=="Spring 2020":
             return (i.get("name"))
     #print ("getRoomAssignments.py data:", data)
-    return 0
+    return data[0]["name"]
 
 

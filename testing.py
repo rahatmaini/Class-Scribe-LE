@@ -5,6 +5,7 @@ import os
 import picamera
 import textIP
 import transcribe
+import getRoomAssignments
 
 class TestStringMethods(unittest.TestCase):
 
@@ -33,5 +34,9 @@ class TestStringMethods(unittest.TestCase):
         idNumber = "2152683378"
         self.assertEqual(("rm4mp@virginia.edu",22),retIDs.getEmailAddressAndPK(idNumber))
 
+    def test_getting_classname(self):
+        # testing the first dummy course, whether it is returned properly or not
+        self.assertEqual(getRoomAssignments.getClassName(),"course1")
+ 
 if __name__ == '__main__':
     unittest.main()
