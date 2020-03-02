@@ -10,26 +10,26 @@ import os
 import textIP
 import capture
 import getRoomAssignments
-import qr
+#import qr
 import returnIDnumbers
 
 inkyphat.set_colour("black")
 font = ImageFont.truetype(inkyphat.fonts.AmaticSCBold, 38)
 
 
-def printWelcomeMsg():
-    img = Image.new("P", (inkyphat.WIDTH, inkyphat.HEIGHT))
-    draw = ImageDraw.Draw(img)
-
-    message = "Welcome"
-
-    w, h = font.getsize(message)
-    x = (inkyphat.WIDTH / 2) - (w / 2)
-    y = (inkyphat.HEIGHT / 2) - (h / 2)
-
-    draw.text((x, y), message, inkyphat.BLACK, font)
-    inkyphat.set_image(img)
-    inkyphat.show()
+#def printWelcomeMsg():
+ #   img = Image.new("P", (inkyphat.WIDTH, inkyphat.HEIGHT))
+  #  draw = ImageDraw.Draw(img)
+#
+ #   message = "Welcome"
+#
+ #   w, h = font.getsize(message)
+  #  x = (inkyphat.WIDTH / 2) - (w / 2)
+   # y = (inkyphat.HEIGHT / 2) - (h / 2)
+#
+ #   draw.text((x, y), message, inkyphat.BLACK, font)
+  #  inkyphat.set_image(img)
+   # inkyphat.show()
 
 def waitingForID(): #loop till ID is presented
 	flag = 1
@@ -61,8 +61,8 @@ def printOutIP(): #for debugging, prints out wlan0 IP of Pi to screen
 
 if __name__ == '__main__':
     #os.system("sudo ntpdate us.pool.ntp.org")
-    inkyphat.set_colour("black")
-    font = ImageFont.truetype(inkyphat.fonts.AmaticSCBold, 38)
+    #inkyphat.set_colour("black")
+    #font = ImageFont.truetype(inkyphat.fonts.AmaticSCBold, 38)
     #printOutIP()
     while (1):
         #printWelcomeMsg()        
@@ -80,7 +80,7 @@ if __name__ == '__main__':
                 capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
 
         else: #not in database, generate QR code to assign encrypted ID to a user
-            qr.printQRcode(idNumber)
+           # qr.printQRcode(idNumber)
             flag = 1
             while (flag):
                 if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
@@ -89,7 +89,7 @@ if __name__ == '__main__':
                     flag=0
                     break
                 time.sleep(3.5)
-            printWelcomeMsg()
+           # printWelcomeMsg()
             if (className != 0):
                 capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
 

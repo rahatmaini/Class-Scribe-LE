@@ -3,6 +3,7 @@ import main
 import returnIDnumbers as retIDs
 import os
 import picamera
+import textIP
 
 class TestStringMethods(unittest.TestCase):
 
@@ -23,6 +24,9 @@ class TestStringMethods(unittest.TestCase):
 	    camera=picamera.PiCamera()
 	    camera.capture("test.jpg")
 	    self.assertTrue(os.path.exists("test.jpg"))
-	
+
+    def test_text_IP(self):
+        self.assertTrue(textIP.textIPtoRahat("test string"))
+
 if __name__ == '__main__':
     unittest.main()
