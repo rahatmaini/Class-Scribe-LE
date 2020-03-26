@@ -3,21 +3,7 @@ import datetime
 import json
 base_url = 'http://128.143.67.97:44104/'
 
-def uploadAudio(file, author, class_name, length, timestamp):
-    url = base_url + "api/audioupload/"
-    audio = open(file, 'rb')
-    files = {
-		"file": audio
-    }
-    data = {
-		"remark": author,
-		"class_name": class_name,
-		"length": length,
-        "timestamp": timestamp
-    }
-    res = requests.request('POST', url, data=data, files=files)
-    print(res.json())
-    return res.json()['key']
+
 
 def createImage(filename, email, class_name, page_num, timestamp):
     url = base_url + 'upload/'
@@ -70,14 +56,6 @@ def addImagestoPage(page_pk, image_pks, image_author, class_name):
     res=requests.request('POST', url, data=data)
     print (res.json())
     
-def addAudioAndTranscription(pk_audio, pk_page, transcript):
-	url = base_url + 'notebooks/add/audio/'
-	data = {
-		"pk_audio": pk_audio,
-		"pk_page": pk_page,
-		"transcript": transcript
-	}
-	print(requests.request('POST', url, data=data).text)
 
 #for i in range(4):
 #	print(createImage(str(i+1)+'.jpg', "jw2vp@virginia.edu", 'CS 1110', i, datetime.datetime.now())['pk'])
