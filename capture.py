@@ -71,9 +71,8 @@ def uploadFiles(filename, className, email, pk):
       # os.system("gcloud ml speech recognize "+ filename+".wav " + "--language-code='en-US' > test.json")
       # os.system("gcloud ml speech recognize "+ filename+".wav " + "--language-code='en-US' > test.json")
         transcript=transcribe.transcribe()
-    except Exception as e:
-        print (e)
-        transcript="RESOURCE_EXHAUSTED: Daily upload quota for class.scribe.co@gmail.com exceeded."
+    except Exception as e: #pragma no cover
+        transcript="RESOURCE_EXHAUSTED: Daily upload quota for class.scribe.co@gmail.com exceeded." #pragma no cover
 
     #apiCalls.addAudioAndTranscription(audioPK,int(pagesPK[0]), transcript)
 
