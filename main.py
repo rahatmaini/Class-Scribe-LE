@@ -80,7 +80,7 @@ if __name__ == '__main__':
                 capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
 
         else: #not in database, generate QR code to assign encrypted ID to a user
-           # qr.printQRcode(idNumber)
+           # qr.printQRcode(idNumber) not using this in hardware revision 2
             flag = 1
             while (flag):
                 if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
@@ -92,4 +92,3 @@ if __name__ == '__main__':
            # printWelcomeMsg()
             if (className != 0):
                 capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
-
