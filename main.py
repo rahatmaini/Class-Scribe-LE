@@ -64,6 +64,7 @@ def mainLoop():
     print ("ID number: ", idNumber)
 
     if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
+        print ("ID is in database")
         className=getRoomAssignments.getClassName()
         emailAddressAndPK=returnIDnumbers.getEmailAddressAndPK(idNumber)
         print ("Email address and PK:", emailAddressAndPK)
@@ -73,11 +74,10 @@ def mainLoop():
             print ("Class name: ", className)
                 # capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1]) requires specialized hardware unable for testing remotely, these components will be tested individually
             return True
-        else:
-            return False
 
     else: #not in database, generate QR code to assign encrypted ID to a user
            # qr.printQRcode(idNumber) not using this in hardware revision 2
+        print ("id is not in database")
         flag = 1
         while (flag):
             if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
@@ -89,16 +89,13 @@ def mainLoop():
            # printWelcomeMsg()
         if (className != 0):
                 # capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1]) see above for why commented out during testing, unable to proceed if enabled
-            return True
-        else:
             return False
 
-if __name__ == '__main__':
+# code commented for testing, no logic only control flow essential to actual physical use rather than testing
+#if __name__ == '__main__':
     #os.system("sudo ntpdate us.pool.ntp.org")
-    #inkyphat.set_colour("black")
-    #font = ImageFont.truetype(inkyphat.fonts.AmaticSCBold, 38)
     #printOutIP()
-    while (1):
+ #   while (1):
         #printWelcomeMsg()  
-        mainLoop()      
+  #      mainLoop()      
         

@@ -10,7 +10,7 @@ import getRoomAssignments
 class TestStringMethods(unittest.TestCase):
 
     def test_successful_ID_retrieval(self):
-	    self.assertTrue(retIDs.findIfIDnumberPresent("2152683378"))
+	    self.assertTrue(retIDs.findIfIDnumberPresent("21526833781"))
     
     def test_ID_input(self):
         self.assertEqual("1",main.waitingForID())
@@ -50,6 +50,10 @@ class TestStringMethods(unittest.TestCase):
         self.assertFalse(getRoomAssignments.isTimeIncluded("MTuWThuF 8:45-10:00"))
     
     def test_dependent_on_user_input(self):
-        self.assertTrue(main.mainLoop()) 
+        self.assertTrue(main.mainLoop())  # for this test to pass, must enter an ID number in the system such as 2153443218
+    
+    def test_no_ID_in_system_so_add_one(self):
+        self.assertFalse(main.mainLoop()) # for this test to pass, enter an ID number then input it into Django admin (as the linkage of ID/student happens off the Pi, untestable here)
+
 if __name__ == '__main__':
     unittest.main()
