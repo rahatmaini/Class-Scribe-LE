@@ -29,14 +29,14 @@ class TestStringMethods(unittest.TestCase):
 	    camera.capture("test.jpg")
 	    self.assertTrue(os.path.exists("test.jpg"))
 
-    #def test_text_IP(self):
-       # self.assertTrue(main.printOutIP()) # if error, will return false
+    def test_text_IP(self):
+        self.assertTrue(main.printOutIP()) # if error, will return false
     
     def test_transcription_file_decoder(self):
         self.assertEqual("how old is the Brooklyn Bridge",transcribe.transcribe())
 
     def test_get_email_and_pk_by_id(self):
-        idNumber = "21526833781"
+        idNumber = "2152683378"
         self.assertEqual(("rm4mp@virginia.edu",22),retIDs.getEmailAddressAndPK(idNumber))
 
     def test_getting_classname(self):
@@ -51,11 +51,11 @@ class TestStringMethods(unittest.TestCase):
         os.system('sudo date -s "28 MAR 2020 00:20:50"')
         self.assertFalse(getRoomAssignments.isTimeIncluded("MTuWThuF 8:45-10:00"))
     
-   # def test_dependent_on_user_input(self):
-    #    self.assertTrue(main.mainLoop())  # for this test to pass, must enter an ID number in the system such as 2153443218
+    def test_dependent_on_user_input(self):
+        self.assertTrue(main.mainLoop())  # for this test to pass, must enter an ID number in the system such as 2153443218
     
-    #def test_no_ID_in_system_so_add_one(self):
-     #   self.assertFalse(main.mainLoop()) # for this test to pass, enter an ID number then input it into Django admin (as the linkage of ID/student happens off the Pi, untestable here)
+    def test_no_ID_in_system_so_add_one(self):
+        self.assertFalse(main.mainLoop()) # for this test to pass, enter an ID number then input it into Django admin (as the linkage of ID/student happens off the Pi, untestable here)
     
     def test_capture(self):
         self.assertTrue(capture.capture("course1","rm4mp@virginia.edu",22))
