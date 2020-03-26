@@ -57,7 +57,7 @@ def printOutIP(): #for debugging, prints out wlan0 IP of Pi to screen
     #draw.text((x, y), message, inkyphat.BLACK, font)
     #inkyphat.set_image(img)
     #inkyphat.show()
-
+    return True
 
 if __name__ == '__main__':
     #os.system("sudo ntpdate us.pool.ntp.org")

@@ -43,6 +43,6 @@ def getClassName():
         if str(i.get("lamp_serial"))==lampSerialNumber and isTimeIncluded(i.get("time")) and str(i.get("semester"))=="Fall 2020":
             return (i.get("name"))
     #print ("getRoomAssignments.py data:", data)
-    return data[0]["name"] # NO this cannot be the default return value, TODO fix
+   # return data[0]["name"] # NO this cannot be the default return value, TODO fix
 
 

@@ -11,6 +11,9 @@ class TestStringMethods(unittest.TestCase):
 
     def test_successful_ID_retrieval(self):
 	    self.assertTrue(retIDs.findIfIDnumberPresent("2152683378"))
+    
+    def test_ID_input(self):
+        self.assertEqual("1",main.waitingForID())
 
     def test_successful_ID_rejection(self):
 	    self.assertFalse(retIDs.findIfIDnumberPresent("2153443218")) #Ben's ID is not in the database
@@ -24,8 +27,8 @@ class TestStringMethods(unittest.TestCase):
 	    camera.capture("test.jpg")
 	    self.assertTrue(os.path.exists("test.jpg"))
 
-   # def test_text_IP(self):
-    #    self.assertTrue(textIP.textIPtoRahat("test string"))
+    def test_text_IP(self):
+        self.assertTrue(main.printOutIP()) # if error, will return false
     
     def test_transcription_file_decoder(self):
         self.assertEqual("how old is the Brooklyn Bridge",transcribe.transcribe())
@@ -42,6 +45,9 @@ class TestStringMethods(unittest.TestCase):
         os.system('sudo date -s "26 MAR 2020 09:00:00"')
         self.assertTrue(getRoomAssignments.isTimeIncluded("MTuWThuF 8:45-10:00"))
 
+    def test_getting_timeExcluded(self):
+        os.system('sudo date -s "28 MAR 2020 00:20:50"')
+        self.assertFalse(getRoomAssignments.isTimeIncluded("MTuWThuF 8:45-10:00"))
  
 if __name__ == '__main__':
     unittest.main()
