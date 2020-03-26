@@ -3,7 +3,7 @@ import urllib2
 import datetime
 
 
-lampSerialNumber="1123456789abcdef"
+lampSerialNumber="0123456789abcdef"
 
 def isTimeIncluded(assignmentTime):
     dayOfWeek=datetime.datetime.today().weekday()
@@ -40,9 +40,9 @@ def getClassName():
     data = json.loads(response.read()).get("assignments")
 
     for i in data:
-        if str(i.get("lamp_serial"))==lampSerialNumber and isTimeIncluded(i.get("time")) and str(i.get("semester"))=="Spring 2020":
+        if str(i.get("lamp_serial"))==lampSerialNumber and isTimeIncluded(i.get("time")) and str(i.get("semester"))=="Fall 2020":
             return (i.get("name"))
     #print ("getRoomAssignments.py data:", data)
-    return data[0]["name"]
+    return data[0]["name"] # NO this cannot be the default return value, TODO fix
 
 

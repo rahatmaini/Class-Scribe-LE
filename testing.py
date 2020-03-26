@@ -37,6 +37,11 @@ class TestStringMethods(unittest.TestCase):
     def test_getting_classname(self):
         # testing the first dummy course, whether it is returned properly or not
         self.assertEqual(getRoomAssignments.getClassName(),"course1")
+    
+    def test_getting_timeIncluded_edge_cases(self):
+        os.system('sudo date -s "26 MAR 2020 09:00:00"')
+        self.assertTrue(getRoomAssignments.isTimeIncluded("MTuWThuF 8:45-10:00"))
+
  
 if __name__ == '__main__':
     unittest.main()
