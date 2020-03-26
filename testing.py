@@ -27,8 +27,8 @@ class TestStringMethods(unittest.TestCase):
 	    camera.capture("test.jpg")
 	    self.assertTrue(os.path.exists("test.jpg"))
 
-    def test_text_IP(self):
-        self.assertTrue(main.printOutIP()) # if error, will return false
+    #def test_text_IP(self):
+       # self.assertTrue(main.printOutIP()) # if error, will return false
     
     def test_transcription_file_decoder(self):
         self.assertEqual("how old is the Brooklyn Bridge",transcribe.transcribe())
@@ -48,6 +48,8 @@ class TestStringMethods(unittest.TestCase):
     def test_getting_timeExcluded(self):
         os.system('sudo date -s "28 MAR 2020 00:20:50"')
         self.assertFalse(getRoomAssignments.isTimeIncluded("MTuWThuF 8:45-10:00"))
- 
+    
+    def test_dependent_on_user_input(self):
+        self.assertTrue(main.mainLoop()) 
 if __name__ == '__main__':
     unittest.main()

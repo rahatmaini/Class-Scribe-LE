@@ -61,31 +61,37 @@ def printOutIP(): #for debugging, prints out wlan0 IP of Pi to screen
 
 def mainLoop():
     idNumber=waitingForID() #read encrypted version of the ID number
-        print ("ID number: ", idNumber)
+    print ("ID number: ", idNumber)
 
-        if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
-            className=getRoomAssignments.getClassName()
-            emailAddressAndPK=returnIDnumbers.getEmailAddressAndPK(idNumber)
-            print ("Email address and PK:", emailAddressAndPK)
+    if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
+        className=getRoomAssignments.getClassName()
+        emailAddressAndPK=returnIDnumbers.getEmailAddressAndPK(idNumber)
+        print ("Email address and PK:", emailAddressAndPK)
 
 
-            if (className != 0):
-                print ("Class name: ", className)
-                capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
+        if (className != 0):
+            print ("Class name: ", className)
+                # capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1]) requires specialized hardware unable for testing remotely, these components will be tested individually
+            return True
+        else:
+            return False
 
-        else: #not in database, generate QR code to assign encrypted ID to a user
+    else: #not in database, generate QR code to assign encrypted ID to a user
            # qr.printQRcode(idNumber) not using this in hardware revision 2
-            flag = 1
-            while (flag):
-                if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
-                    className=getRoomAssignments.getClassName()
-                    emailAddressAndPK=returnIDnumbers.getEmailAddressAndPK(idNumber)
-                    flag=0
-                    break
-                time.sleep(3.5)
+        flag = 1
+        while (flag):
+            if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
+                className=getRoomAssignments.getClassName()
+                emailAddressAndPK=returnIDnumbers.getEmailAddressAndPK(idNumber)
+                flag=0
+                break
+            time.sleep(3.5)
            # printWelcomeMsg()
-            if (className != 0):
-                capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
+        if (className != 0):
+                # capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1]) see above for why commented out during testing, unable to proceed if enabled
+            return True
+        else:
+            return False
 
 if __name__ == '__main__':
     #os.system("sudo ntpdate us.pool.ntp.org")
