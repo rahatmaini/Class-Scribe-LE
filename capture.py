@@ -11,7 +11,7 @@ imageTimeStamps=[]
 counter = 0
 
 def audioRecord(filename):
-	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "-c1", "--duration=50", filename+".wav"], stdout=subprocess.PIPE)
+	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "-c1", "--duration=1", filename+".wav"], stdout=subprocess.PIPE)
 	output2 = test2.communicate()[0]
 
 def takePhotos(filename):
@@ -23,7 +23,7 @@ def takePhotos(filename):
         output = test.communicate()[0]
         currTime = int(str(datetime.datetime.now().time().hour)+str(datetime.datetime.now().time().minute))
         counter+=1
-        if (time.time() - t0 >= 50):   #DURATION!!
+        if (time.time() - t0 >= 5):   #DURATION!!
             flag = 0
             break
 
@@ -39,12 +39,14 @@ def capture(className, email, pk):
     t2.join()
 
     uploadFiles(timeStampedFileName, className, email, pk)
+    
+    return True
 
 def uploadFiles(filename, className, email, pk):
     
-    audioPK=apiCalls.uploadAudio(filename+".wav", email, className, "5", str(time.time()))
+   # audioPK=apiCalls.uploadAudio("test.wav", email, className, "5", "07/03/2020 00:00:00")
     #counter is number of photos-1
-    print ("audio pk:", audioPK)
+   # print ("audio pk:", audioPK)
     notebookPK = apiCalls.createNotebook(False, className, email+"'s "+className, pk)
     print ("notebookPK", notebookPK)
     print (counter)
@@ -66,14 +68,14 @@ def uploadFiles(filename, className, email, pk):
     transcript='something'
     
     try:
-        os.system("gcloud ml speech recognize "+ filename+".wav " + "--language-code='en-US' > test.json")
-        os.system("gcloud ml speech recognize "+ filename+".wav " + "--language-code='en-US' > test.json")
+      # os.system("gcloud ml speech recognize "+ filename+".wav " + "--language-code='en-US' > test.json")
+      # os.system("gcloud ml speech recognize "+ filename+".wav " + "--language-code='en-US' > test.json")
         transcript=transcribe.transcribe()
     except Exception as e:
         print (e)
         transcript="RESOURCE_EXHAUSTED: Daily upload quota for class.scribe.co@gmail.com exceeded."
 
-    apiCalls.addAudioAndTranscription(audioPK,int(pagesPK[0]), transcript)
+    #apiCalls.addAudioAndTranscription(audioPK,int(pagesPK[0]), transcript)
 
      
     

@@ -16,6 +16,7 @@ def uploadAudio(file, author, class_name, length, timestamp):
         "timestamp": timestamp
     }
     res = requests.request('POST', url, data=data, files=files)
+    print(res.json())
     return res.json()['key']
 
 def createImage(filename, email, class_name, page_num, timestamp):
