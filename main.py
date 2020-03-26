@@ -59,14 +59,8 @@ def printOutIP(): #for debugging, prints out wlan0 IP of Pi to screen
     #inkyphat.show()
     return True
 
-if __name__ == '__main__':
-    #os.system("sudo ntpdate us.pool.ntp.org")
-    #inkyphat.set_colour("black")
-    #font = ImageFont.truetype(inkyphat.fonts.AmaticSCBold, 38)
-    #printOutIP()
-    while (1):
-        #printWelcomeMsg()        
-        idNumber=waitingForID() #read encrypted version of the ID number
+def mainLoop():
+    idNumber=waitingForID() #read encrypted version of the ID number
         print ("ID number: ", idNumber)
 
         if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
@@ -92,3 +86,13 @@ if __name__ == '__main__':
            # printWelcomeMsg()
             if (className != 0):
                 capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
+
+if __name__ == '__main__':
+    #os.system("sudo ntpdate us.pool.ntp.org")
+    #inkyphat.set_colour("black")
+    #font = ImageFont.truetype(inkyphat.fonts.AmaticSCBold, 38)
+    #printOutIP()
+    while (1):
+        #printWelcomeMsg()  
+        mainLoop()      
+        
