@@ -12,7 +12,7 @@ def uploadAudio(file, author, class_name, length, timestamp):
 		"file": audio
 	}
 	data = {
-		"remark": author+datetime.datetime.now(),
+		"remark": author+str(datetime.datetime.now()),
 		"class_name": class_name,
 		"length": length,
 		"timestamp": timestamp
