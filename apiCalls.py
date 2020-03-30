@@ -3,20 +3,25 @@ import datetime
 import json
 base_url = 'http://128.143.67.97:44104/'
 
+
+
 def uploadAudio(file, author, class_name, length, timestamp):
-    url = base_url + "api/audioupload/"
-    audio = open(file, 'rb')
-    files = {
+	url = base_url + "api/audioupload/"
+	audio = open(file, 'rb')
+	files = {
 		"file": audio
-    }
-    data = {
-		"remark": author,
+	}
+	data = {
+		"remark": author+datetime.datetime.now(),
 		"class_name": class_name,
 		"length": length,
-        "timestamp": timestamp
-    }
-    res = requests.request('POST', url, data=data, files=files)
-    return res.json()['key']
+		"timestamp": timestamp
+	}
+	res = requests.request('POST', url, data=data, files=files)
+	print (res.text)
+	return res.json()['key']
+
+#uploadAudio("test.wav", "123", "uh", "5", str(datetime.datetime.now()))
 
 def createImage(filename, email, class_name, page_num, timestamp):
     url = base_url + 'upload/'
