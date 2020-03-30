@@ -42,14 +42,11 @@ def capture(className, email, pk):
 
     t1 = threading.Thread(target=audioRecord, args=(timeStampedFileName,))
     t2 = threading.Thread(target=takePhotos, args=(timeStampedFileName,))
-    t3 = threading.Thread(target=newPageInput, args=())
 
     t1.start()
     t2.start()
-    t3.start()
     t1.join()
     t2.join()
-    t3.join()
 
     uploadFiles(timeStampedFileName, className, email, pk)
 
