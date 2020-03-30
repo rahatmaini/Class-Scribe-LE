@@ -3,7 +3,7 @@ import urllib2
 import datetime
 
 
-lampSerialNumber="1123456789abcdef"
+lampSerialNumber="0123456789abcdef"
 
 def isTimeIncluded(assignmentTime):
     dayOfWeek=datetime.datetime.today().weekday()

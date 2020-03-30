@@ -14,12 +14,17 @@ def audioRecord(filename):
 	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "-c1", "--duration=50", filename+".wav"], stdout=subprocess.PIPE)
 	output2 = test2.communicate()[0]
 
+def newPageInput():
+    while (1):
+        test3 = input()
+
 def takePhotos(filename):
     t0 = time.time()
     flag = 1
     global counter 
     while (flag):
         test = subprocess.Popen(["raspistill","-o",str(filename+str(counter))+".jpg"], stdout=subprocess.PIPE)
+        imageTimeStamps.append(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         output = test.communicate()[0]
         currTime = int(str(datetime.datetime.now().time().hour)+str(datetime.datetime.now().time().minute))
         counter+=1
@@ -54,7 +59,7 @@ def uploadFiles(filename, className, email, pk):
     while (x<counter):
         if (os.path.isfile(filename+str(x)+".jpg")):
             print (x)
-            imagesPK.append(int(apiCalls.createImage(filename+str(x)+".jpg",email, className, "1", datetime.datetime.now())))
+            imagesPK.append(int(apiCalls.createImage(filename+str(x)+".jpg",email, className, "1", imageTimeStamps[x])))
         x+=1
 
     pagesPK.append(apiCalls.createPage(str(datetime.datetime.now()).split()[0],str(datetime.datetime.now()),notebookPK))
