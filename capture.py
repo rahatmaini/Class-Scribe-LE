@@ -8,6 +8,7 @@ import apiCalls
 import os
 
 imageTimeStamps=[]
+newPageTimes = []
 counter = 0
 
 def audioRecord(filename):
@@ -15,8 +16,12 @@ def audioRecord(filename):
 	output2 = test2.communicate()[0]
 
 def newPageInput():
+    t2test = time.time()
     while (1):
         test3 = input()
+        if (time.time() - t2test >= 20):   #DURATION!!
+            flag = 0
+            break
 
 def takePhotos(filename):
     t0 = time.time()
@@ -24,7 +29,7 @@ def takePhotos(filename):
     global counter 
     while (flag):
         test = subprocess.Popen(["raspistill","-o",str(filename+str(counter))+".jpg"], stdout=subprocess.PIPE)
-        imageTimeStamps.append(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        imageTimeStamps.append(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))
         output = test.communicate()[0]
         currTime = int(str(datetime.datetime.now().time().hour)+str(datetime.datetime.now().time().minute))
         counter+=1
@@ -37,11 +42,14 @@ def capture(className, email, pk):
 
     t1 = threading.Thread(target=audioRecord, args=(timeStampedFileName,))
     t2 = threading.Thread(target=takePhotos, args=(timeStampedFileName,))
+    t3 = threading.Thread(target=newPageInput, args=())
 
     t1.start()
     t2.start()
+    t3.start()
     t1.join()
     t2.join()
+    t3.join()
 
     uploadFiles(timeStampedFileName, className, email, pk)
 
