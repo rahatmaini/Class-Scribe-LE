@@ -51,17 +51,17 @@ if __name__ == '__main__':
         idNumber=waitingForID() #read encrypted version of the ID number
         print ("ID number: ", idNumber)
 
-        if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
-            className=getRoomAssignments.getClassName()
-            emailAddressAndPK=returnIDnumbers.getEmailAddressAndPK(idNumber)
-            print ("Email address and PK:", emailAddressAndPK)
+        #if (returnIDnumbers.findIfIDnumberPresent(idNumber)):
+        className=getRoomAssignments.getClassName()
+        emailAddressAndPK=returnIDnumbers.getEmailAddressAndPK(idNumber)
+        print ("Email address and PK:", emailAddressAndPK)
 
 
-            if (className != 0):
-                print ("Class name: ", className)
-                capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
+        if (className != 0):
+            print ("Class name: ", className)
+            capture.capture(className,emailAddressAndPK[0],emailAddressAndPK[1])
 
-        else: #not in database, generate QR code to assign encrypted ID to a user
+       # else: #not in database, generate QR code to assign encrypted ID to a user
             # qr.printQRcode(idNumber)
             # flag = 1
             # while (flag):
