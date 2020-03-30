@@ -12,7 +12,7 @@ def uploadAudio(file, author, class_name, length, timestamp):
 		"file": audio
 	}
 	data = {
-		"remark": author+str(datetime.datetime.now()),
+		"remark": str(datetime.datetime.now())[0:15],
 		"class_name": class_name,
 		"length": length,
 		"timestamp": timestamp
@@ -37,8 +37,10 @@ def createImage(filename, email, class_name, page_num, timestamp):
         "lampSN": 1
 	}
     res = requests.request('POST', url, data=data, files=files)
-    #print (res.json())
+    print (res.text)
     return res.json()['pk']
+
+#createImage("1.jpg","rm4mp@virginia.edu","uh","1", datetime.datetime.now())
 
 def createNotebook(private, class_name, notebookname, user_pk):
     url = base_url + 'notebooks/create/'

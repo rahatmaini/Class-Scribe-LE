@@ -11,7 +11,7 @@ imageTimeStamps=[]
 counter = 0
 
 def audioRecord(filename):
-	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "--duration=50", filename+".wav"], stdout=subprocess.PIPE)
+	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "-c", "2", "--duration=20", filename+".wav"], stdout=subprocess.PIPE)
 	output2 = test2.communicate()[0]
 
 def newPageInput():
@@ -28,7 +28,7 @@ def takePhotos(filename):
         output = test.communicate()[0]
         currTime = int(str(datetime.datetime.now().time().hour)+str(datetime.datetime.now().time().minute))
         counter+=1
-        if (time.time() - t0 >= 50):   #DURATION!!
+        if (time.time() - t0 >= 20):   #DURATION!!
             flag = 0
             break
 
@@ -47,7 +47,7 @@ def capture(className, email, pk):
 
 def uploadFiles(filename, className, email, pk):
     
-    audioPK=apiCalls.uploadAudio(filename+".wav", email, className, "5", str(time.time()))
+    audioPK=apiCalls.uploadAudio(filename+".wav", email, className, "5", str(datetime.datetime.now()))
     #counter is number of photos-1
     print ("audio pk:", audioPK)
     notebookPK = apiCalls.createNotebook(False, className, email+"'s "+className, pk)
