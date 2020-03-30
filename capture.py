@@ -11,7 +11,7 @@ imageTimeStamps=[]
 counter = 0
 
 def audioRecord(filename):
-	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "-c1", "--duration=50", filename+".wav"], stdout=subprocess.PIPE)
+	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "--duration=50", filename+".wav"], stdout=subprocess.PIPE)
 	output2 = test2.communicate()[0]
 
 def newPageInput():
