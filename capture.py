@@ -17,7 +17,7 @@ pages = []
 
 
 def audioRecord(filename):
-	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "-c", "2", "--duration=20", filename], stdout=subprocess.PIPE) # DURATION!!
+	test2 = subprocess.Popen(["arecord", "--device=hw:1,0", "--format", "S16_LE", "--rate", "44100", "-c", "2", "--duration=30", filename], stdout=subprocess.PIPE) # DURATION!!
 	output2 = test2.communicate()[0]
 
 
@@ -25,7 +25,7 @@ def takePhotos():
 	t0 = time.time()
 	flag = 1
  
-	while (time.time() - t0 >= 20):
+	while (time.time() - t0 >= 30):
 		snapDict = {}
 		picFilename = str(time.time())+".jpg"
 		test = subprocess.Popen(["raspistill","-o",picFilename],stdout=subprocess.PIPE)
@@ -84,7 +84,7 @@ def transcribeAudio(filename):
 
 def extractHandwriting(filename):
 	client = vision.ImageAnnotatorClient()
-	listOfWord = []
+	listOfWords = []
 	
 	with io.open(filename, 'rb') as image_file:
 		content = image_file.read()
@@ -113,61 +113,48 @@ def extractHandwriting(filename):
 			'{}\nFor more info on error messages, check: '
 			'https://cloud.google.com/apis/design/errors'.format(
 				response.error.message))
+
 	return listOfWords
 	
 	
 def uploadFiles(filename, className, email, pk):
 
-	audioPK=apiCalls.uploadAudio(filename, email, className, "5", str(datetime.datetime.now()))
-	print ("audio pk:", audioPK)
-	notebookPK = apiCalls.createNotebook(False, className, email+"'s "+className, pk)
-	print ("notebookPK", notebookPK)
-	
-	
-	transcript = str(transcribeAudio(filename))
-	
+	audioPK=apiCalls.uploadAudio(filename, email, className, "5", str(datetime.datetime.now())) #file, author, class_name, length, timestamp
+	notebookPK = apiCalls.createNotebook(False, className, className, pk) #private, class_name, notebookname, user_pk
+	transcript = str(transcribeAudio(filename)) #transcript is the same over entire session
+
+	#
+	#
 	# for loop here to read from Arduino and set finalSnapshot boolean and then doc scan
+	#
+	#
 	
-	indexOfFirstSnap=0
-	for pic in snapshots: #watch out for index out of bounds errors that might happen here
-	
+	indexOfFirstSnap=0 #watch out for index out of bounds errors that might happen here
+	for pic in snapshots: 
+
+		pic["pk"] = int(apiCalls.createImage(pic["filename"], email, className, "1", pic["timestamp"]))
+
 		if (pic["isThisFinalSnapshot"]):
 			pageDict={}
-			pageDict["snapshots"] = snapshots[indexOfFirstSnap:snapshots.index(pic)+1] #from first snap ot the last
+			pageDict["snapshots"] = snapshots[indexOfFirstSnap:snapshots.index(pic)+1] #from first snap to the last in page
 			indexOfFirstSnap = snapshots.index(pic)
 			
 			pageDict["handwriting"] = str(extractHandwriting(pic["filename"]))
-			#pageDict["transcript"] = transcript
 			pageDict["name"] = pic["filename"]
 			
 			pages.append(pageDict)
 	
+
 	for page in pages:
+		page["pk"] = apiCalls.createPage(str(datetime.datetime.now()).split()[0],str(datetime.datetime.now()),notebookPK) 
+
+		for image in page["snapshots"]:
+			apiCalls.addImagestoPage(int(page["pk"]), image["pk"], email, className)
 		
-			
 
+		apiCalls.addAudioAndTranscription(audioPK,int(page["pk"]), transcript)
 
-	x = 0
-	imagesPK=[]
-	pagesPK=[]
-	while (x<counter):
-		if (os.path.isfile(filename+str(x)+".jpg")):
-			print (x)
-			imagesPK.append(int(apiCalls.createImage(filename+str(x)+".jpg",email, className, "1", imageTimeStamps[x])))
-		x+=1
-
-	pagesPK.append(apiCalls.createPage(str(datetime.datetime.now()).split()[0],str(datetime.datetime.now()),notebookPK))
 	
-	for item in imagesPK:
-		apiCalls.addImagestoPage(int(pagesPK[0]), item, email, className)
- 
-	#at this point, uploaded audio and uploaded images
-		
-	
-	
-   
-
-	apiCalls.addAudioAndTranscription(audioPK,int(pagesPK[0]), transcript)
 
 	 
 	

@@ -1,47 +1,38 @@
-from google.cloud import vision
-import io
 import os
+import sys
+import requests
+# If you are using a Jupyter notebook, uncomment the following line.
+# %matplotlib inline
+import matplotlib.pyplot as plt
+from PIL import Image
+from io import BytesIO
 
-listOfWords=[]
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'service-account-file.json'
+subscription_key = "849cf28570944c23bf4bf1f74ef10d49"
+endpoint = "https://classscribe.cognitiveservices.azure.com/"
 
-def detect_document():
-    """Detects document features in an image."""
-    client = vision.ImageAnnotatorClient()
+analyze_url = endpoint + "vision/v2.1/analyze"
 
-    with io.open("notesA1.jpg", 'rb') as image_file:
-        content = image_file.read()
+# Set image_path to the local path of an image that you want to analyze.
+image_path = "note3.png"
 
-    image = vision.types.Image(content=content)
+# Read the image into a byte array
+image_data = open(image_path, "rb").read()
+headers = {'Ocp-Apim-Subscription-Key': subscription_key,
+           'Content-Type': 'application/octet-stream'}
+params = {'visualFeatures': 'Categories,Description,Color'}
+response = requests.post(
+    analyze_url, headers=headers, params=params, data=image_data)
+response.raise_for_status()
 
-    response = client.document_text_detection(image=image)
+# The 'analysis' object contains various fields that describe the image. The most
+# relevant caption for the image is obtained from the 'description' property.
+analysis = response.json()
+print(analysis)
+image_caption = analysis["description"]["captions"][0]["text"].capitalize()
 
-    for page in response.full_text_annotation.pages:
-        for block in page.blocks:
-            print('\nBlock confidence: {}\n'.format(block.confidence))
-
-            for paragraph in block.paragraphs:
-                print('Paragraph confidence: {}'.format(
-                    paragraph.confidence))
-
-                for word in paragraph.words:
-                    word_text = ''.join([
-                        symbol.text for symbol in word.symbols
-                    ])
-                    #print('Word text: {} (confidence: {})'.format(word_text, word.confidence))
-                    listOfWords.append(word_text)
-
-
-                    #for symbol in word.symbols:
-                        #print('\tSymbol: {} (confidence: {})'.format(
-                         #   symbol.text, symbol.confidence))
-
-    if response.error.message:
-        raise Exception(
-            '{}\nFor more info on error messages, check: '
-            'https://cloud.google.com/apis/design/errors'.format(
-                response.error.message))
-
-
-detect_document()
-print (listOfWords)
+# Display the image and overlay it with the caption.
+image = Image.open(BytesIO(image_data))
+plt.imshow(image)
+plt.axis("off")
+_ = plt.title(image_caption, size="x-large", y=-0.1)
+plt.show()

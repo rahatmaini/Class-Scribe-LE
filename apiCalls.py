@@ -34,7 +34,7 @@ def createImage(filename, email, class_name, page_num, timestamp):
 		"class_name": class_name,
 		"page_num": page_num,
 		"timestamp": timestamp,
-        "lampSN": 1
+        "lampSN": 1 #no need for actual serial num
 	}
     res = requests.request('POST', url, data=data, files=files)
     print (res.text)
