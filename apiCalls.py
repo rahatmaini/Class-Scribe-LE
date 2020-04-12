@@ -76,14 +76,16 @@ def addImagestoPage(page_pk, image_pks, image_author, class_name):
     res=requests.request('POST', url, data=data)
     print (res.json())
     
-def addAudioAndTranscription(pk_audio, pk_page, transcript):
+def addAudioAndTranscription(pk_audio, pk_page, transcript, handwriting):
 	url = base_url + 'notebooks/add/audio/'
 	data = {
 		"pk_audio": pk_audio,
 		"pk_page": pk_page,
-		"transcript": transcript
+		"transcript": transcript,
+		"handwriting": handwriting
 	}
 	print(requests.request('POST', url, data=data).text)
+
 
 #for i in range(4):
 #	print(createImage(str(i+1)+'.jpg', "jw2vp@virginia.edu", 'CS 1110', i, datetime.datetime.now())['pk'])

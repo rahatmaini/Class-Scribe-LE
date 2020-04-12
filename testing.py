@@ -1,28 +1,39 @@
-import unittest
-import main
-import returnIDnumbers as retIDs
+from google.cloud import speech_v1p1beta1
+from google.cloud.speech_v1p1beta1 import enums
 import os
-import picamera
 
-class TestStringMethods(unittest.TestCase):
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'service-account-file.json'
 
-    def test_successful_ID_retrieval(self):
-	self.assertTrue(retIDs.findIfIDnumberPresent("2152683378"))
 
-    def test_successful_ID_rejection(self):
-	self.assertFalse(retIDs.findIfIDnumberPresent("2153443218")) #Ben's ID is not in the database
+def sample_recognize():
 
-    def test_Rahat_ID(self):
-        self.assertEqual("2152683378",main.waitingForID())
+    client = speech_v1p1beta1.SpeechClient()
 
-    def test_audio_recorded(self):
-	os.system("arecord --device=hw:1,0 --format S16_LE --rate 44100 -c1 test.wav")
-	self.assertTrue(os.path.exists("test.wav"))
-    
-    def test_image_capture(self):
-	camera=picamera.PiCamera()
-	camera.capture("test.jpg")
-	self.assertTrue(os.path.exists("test.jpg"))
-	
-if __name__ == '__main__':
-    unittest.main()
+    #gsutil cp test.wav gs://classscribe
+
+
+    storage_uri = 'gs://classscribe/test.wav'
+
+
+    # Encoding of audio data sent. This sample sets this explicitly.
+    # This field is optional for FLAC and WAV audio formats.
+    encoding = enums.RecognitionConfig.AudioEncoding.MP3
+    config = {
+        "language_code": "en-US",
+        "sample_rate_hertz": 44100,
+        "encoding": encoding,
+    }
+    audio = {"uri": storage_uri}
+
+    #response = client.recognize(config, audio)
+
+    operation = client.long_running_recognize(config, audio)
+    print(u"Waiting for operation to complete...")
+    response = operation.result()
+
+
+    for result in response.results:
+        alternative = result.alternatives[0]
+        return (alternative.transcript) 
+
+sample_recognize()
